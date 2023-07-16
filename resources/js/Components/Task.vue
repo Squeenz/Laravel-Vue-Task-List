@@ -1,15 +1,19 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
+    id: Number,
     title: String,
-    content: String,
+    created: String,
+    updated: String,
 });
-
 </script>
 
 <template>
-    <div class="m-5 bg-white border border-gray-400 rounded max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
-        <h1>{{ props.title }}</h1>
-        <p>{{ props.content }}</p>
-    </div>
+        <div class="border-2 mt-2 mb-2 p-2">
+            <h1><Link :href="route('task.show', props.id)"> {{ props.title }}</Link></h1>
+            <small>Created At: {{ new Date(props.created).toLocaleString() }}</small>
+            <br/>
+            <small>Updated At: {{ new Date(props.updated).toLocaleString() }}</small>
+        </div>
 </template>

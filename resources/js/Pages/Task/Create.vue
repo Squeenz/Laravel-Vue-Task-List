@@ -1,5 +1,5 @@
 <script setup>
-import { useForm, Head } from '@inertiajs/vue3';
+import { useForm, Head, Link } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputError from '@/Components/InputError.vue';
@@ -26,7 +26,8 @@ const form = useForm({
                 <textarea v-model="form.content" name="content" type="text" class="w-full rounded mt-4 mb-4"></textarea>
 
                 <PrimaryButton>Create</PrimaryButton>
-                <a :href="route('task.index')" class="ml-4">Cancel</a>
+
+                <Link :href="route('task.index')" class="ml-4">Cancel</Link>
             </form>
         </div>
     </AuthenticatedLayout>

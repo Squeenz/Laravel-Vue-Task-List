@@ -49,7 +49,11 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+        $task = Task::where('user_id', Auth::id())->findOrFail($task->id);
+
+        return Inertia::render('Task/Task', [
+             'task' => $task,
+        ]);
     }
 
     /**

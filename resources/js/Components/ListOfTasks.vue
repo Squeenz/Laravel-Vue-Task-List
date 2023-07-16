@@ -11,7 +11,9 @@ const props = defineProps({
     <Task
         v-for="task in props.tasks"
         v-bind:key="task.id"
+        :id="task.id"
         :title="task.title"
-        :content="task.content"
+        :created="task.created_at"
+        :updated="task.updated_at"
     ></Task>
 </template>

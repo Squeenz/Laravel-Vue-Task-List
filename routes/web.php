@@ -31,7 +31,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('task', TaskController::class)
-->only(['index', 'create', 'store'])
+->only(['index', 'create', 'store', 'show'])
 ->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
