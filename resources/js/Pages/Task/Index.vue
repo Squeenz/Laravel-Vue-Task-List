@@ -6,6 +6,10 @@ import ListOfTasks from '@/Components/ListOfTasks.vue';
 
 const props = defineProps(['tasks'])
 
+const numTasks = props.tasks.length;
+const numColumns = numTasks < 5 ? numTasks : 4;
+const gridClass = 'grid grid-rows-' +  numColumns + ' grid-flow-col gap-4 justify-center';
+
 </script>
 
 <template>
@@ -15,7 +19,7 @@ const props = defineProps(['tasks'])
             <Link :href="route('task.create')"><PrimaryButton class="mt-4 mb-4">Create A Task</PrimaryButton></Link>
 
             <h1>List of tasks</h1>
-            <div class="grid grid-rows-2 grid-flow-col gap-4 justify-center">
+            <div :class="gridClass">
                 <ListOfTasks :tasks="tasks"/>
             </div>
 

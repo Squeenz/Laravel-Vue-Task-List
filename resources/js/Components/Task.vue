@@ -10,10 +10,10 @@ const props = defineProps({
 </script>
 
 <template>
-        <div class="border-2 mt-2 mb-2 p-2">
+        <div class="border-2 mt-2 mb-2 p-2 bg-gray-50">
             <h1><Link :href="route('task.show', props.id)"> {{ props.title }}</Link></h1>
-            <small>Created At: {{ new Date(props.created).toLocaleString() }}</small>
+            <small>Created at: {{ new Date(props.created).toLocaleString() }}</small>
             <br/>
-            <small>Updated At: {{ new Date(props.updated).toLocaleString() }}</small>
+            <small>Updated at: {{ new Date(props.updated).toLocaleString() }}</small>
         </div>
 </template>

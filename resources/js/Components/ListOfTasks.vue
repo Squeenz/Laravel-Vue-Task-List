@@ -4,7 +4,6 @@ import Task from '@/Components/Task.vue';
 const props = defineProps({
     tasks: Array
 });
-
 </script>
 
 <template>
