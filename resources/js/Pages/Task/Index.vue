@@ -8,7 +8,7 @@ const props = defineProps(['tasks'])
 
 const numTasks = props.tasks.length;
 const numColumns = numTasks < 5 ? numTasks : 4;
-const gridClass = 'grid grid-rows-' +  numColumns + ' grid-flow-col gap-4 justify-center';
+const gridClass = 'grid grid-cols-'+ numColumns +' gap-4';
 
 </script>
 

@@ -32,15 +32,17 @@ const form = useForm({
                 </section>
             </div>
 
-            <form @submit.prevent="">
+            <form @submit.prevent="form.put(route('task.update', props.task.id), { onSuccess: () => editing = false})">
                 <div v-if="editing !== false">
                     <section class="pb-4">
                         <h1 class="border-t-2 uppercase text-center text-xl">Title</h1>
+                        <InputError :message="form.errors.title"/>
                         <input v-model="form.title" name="title" type="text" class="border-gray-200 border-l-2 border-r-2 border-b-2 p-2 w-full"/>
                     </section>
 
                     <section class="pb-4">
                         <h1 class="border-t-2 uppercase text-center text-xl">Content</h1>
+                        <InputError :message="form.errors.content"/>
                         <textarea v-model="form.content" name="content" type="text" class="border-gray-200 border-l-2 border-r-2 border-b-2 p-2 w-full"></textarea>
                     </section>
                 </div>
@@ -48,13 +50,13 @@ const form = useForm({
                 <div class="grid grid-rows-2 grid-flow-col gap-2 justify-center">
                     <section v-if="editing !== true" class="grid grid-rows-1 grid-flow-col gap-2">
                         <PrimaryButton @click="editing = true">Edit</PrimaryButton>
-                        <PrimaryButton class="bg-emerald-500 hover:bg-emerald-700 active:bg-emerald-700 focus:bg-emerald-700">Mark as completed</PrimaryButton>
-                        <PrimaryButton class="bg-rose-500 hover:bg-rose-700 active:bg-rose-700 focus:bg-rose-700">Delete</PrimaryButton>
+                        <PrimaryButton class="bg-emerald-400 hover:bg-emerald-600 active:bg-emerald-600 focus:bg-emerald-600">Mark as completed</PrimaryButton>
+                        <Link as="button" :href="route('task.destroy', props.task.id)" method="DELETE"><PrimaryButton class="bg-rose-400 hover:bg-rose-600 active:bg-rose-600 focus:bg-rose-600">Delete</PrimaryButton></Link>
                     </section>
 
-                    <section v-if="editing !== false" class="grid grid-rows-1 grid-flow-col gap-2">
-                        <PrimaryButton @click="editing = false" class="bg-rose-500 hover:bg-rose-700 active:bg-rose-700 focus:bg-rose-700">Cancel</PrimaryButton>
-                        <PrimaryButton class="bg-emerald-500 hover:bg-emerald-700 active:bg-emerald-700 focus:bg-emerald-700">Save</PrimaryButton>
+                    <section v-else class="grid grid-rows-1 grid-flow-col gap-2">
+                        <PrimaryButton @click="editing = false" class="bg-rose-400 hover:bg-rose-600 active:bg-rose-600 focus:bg-rose-600">Cancel</PrimaryButton>
+                        <PrimaryButton class="bg-emerald-400 hover:bg-emerald-600 active:bg-emerald-600 focus:bg-emerald-600">Save</PrimaryButton>
                     </section>
 
                     <Link :href="route('task.index')" class="text-center">Back</Link>

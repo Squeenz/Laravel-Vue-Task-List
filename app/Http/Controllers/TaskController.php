@@ -67,16 +67,27 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(Request $request, Task $task): RedirectResponse
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required | max:255',
+            'content' => 'required'
+        ]);
+
+        $task->update($validated);
+
+        return redirect(route('task.show', $task->id));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy(Task $task): RedirectResponse
     {
-        //
+        $this->authorize('delete', $task);
+
+        $task->delete();
+
+        return redirect(route('task.index'));
     }
 }
