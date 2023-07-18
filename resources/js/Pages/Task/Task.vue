@@ -49,8 +49,7 @@ const form = useForm({
 
                 <div class="grid grid-rows-2 grid-flow-col gap-2 justify-center">
                     <section v-if="editing !== true" class="grid grid-rows-1 grid-flow-col gap-2">
-                        <PrimaryButton @click="editing = true">Edit</PrimaryButton>
-                        <PrimaryButton class="bg-emerald-400 hover:bg-emerald-600 active:bg-emerald-600 focus:bg-emerald-600">Mark as completed</PrimaryButton>
+                        <PrimaryButton @click="editing = true" class="bg-blue-400 hover:bg-blue-600 active:bg-blue-600 focus:bg-blue-600">Edit</PrimaryButton>
                         <Link as="button" :href="route('task.destroy', props.task.id)" method="DELETE"><PrimaryButton class="bg-rose-400 hover:bg-rose-600 active:bg-rose-600 focus:bg-rose-600">Delete</PrimaryButton></Link>
                     </section>
 
