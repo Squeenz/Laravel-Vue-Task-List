@@ -48,6 +48,7 @@ function onAdd(event) {
     >
     <template #item="{ element }">
       <Task
+        class="line-through border-2 mt-2 mb-2 p-2 bg-green-50 border-green-300 text-green-900"
         :id="element.id"
         :title="element.title"
         :created="element.created_at"

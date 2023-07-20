@@ -5,7 +5,7 @@ const props = defineProps({
     id: Number,
     title: String,
     created: String,
-    updated: String,
+    updated: String
 });
 </script>
 
