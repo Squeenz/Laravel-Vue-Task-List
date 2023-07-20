@@ -17,7 +17,8 @@ class TaskController extends Controller
     public function index(): Response
     {
         return Inertia::render('Task/Index', [
-            'tasks' => Task::where('user_id', Auth::id())->get(),
+            'completedTasks' => Task::where('user_id', Auth::id())->where('completed', true)->orderBy('updated_at')->get(),
+            'notCompletedTasks' => Task::where('user_id', Auth::id())->where('completed', false)->orderBy('updated_at')->get()
         ]);
     }
 
@@ -77,6 +78,18 @@ class TaskController extends Controller
         $task->update($validated);
 
         return redirect(route('task.show', $task->id));
+    }
+
+    /**
+     * Update the completed status of the specified resource in storage.
+     */
+    public function updateCompleted(Task $task): RedirectResponse
+    {
+        $task->update([
+            'completed' => !$task->completed,
+        ]);
+
+        return redirect(route('task.index'));
     }
 
     /**

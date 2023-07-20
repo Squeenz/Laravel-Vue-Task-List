@@ -10,7 +10,7 @@ const props = defineProps({
 </script>
 
 <template>
-        <div class="border-2 mt-2 mb-2 p-2 bg-gray-50 max-w-xl min-w-[50%]">
+        <div class="border-2 mt-2 mb-2 p-2 bg-gray-50">
             <h1 class="text-ellipsis overflow-hidden"><Link :href="route('task.show', props.id)"> {{ props.title }}</Link></h1>
             <small>Created at: {{ new Date(props.created).toLocaleString() }}</small>
             <br/>

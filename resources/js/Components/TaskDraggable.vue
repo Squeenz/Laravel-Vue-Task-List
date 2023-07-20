@@ -1,95 +1,62 @@
 <script setup>
+import { defineProps, ref } from 'vue';
 import draggable from 'vuedraggable';
+import Task from '@/Components/Task.vue';
 import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
-    completedTasks: {
-        type: Array
-    },
-    uncompletedTasks: {
-        type: Array
-    }
+  completedTasks: Array,
+  notCompletedTasks: Array,
 });
 
-let completedTasksNew = props.completedTasks;
-let uncompletedTasksNew = props.uncompletedTasks;
+const newCompletedTasks = ref(props.completedTasks);
+const newNotCompletedTasks = ref(props.notCompletedTasks);
 
-const onAdd = (event, completed) => {
-    let id = event.item.getAttribute('data-id');
-    router
-        .patch(`/tasks/${id}`, {
-            completed: completed
-        })
-        .then((response) => {
-            console.log(response.data)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-}
-
-const update = () => {
-    uncompletedTasksNew = uncompletedTasksNew.map((task, index) => {
-        task.order = index + 1
-        return task
-    })
-
-    completedTasksNew = completedTasksNew.map((task, index) => {
-        task.order = index + 1
-        return task
-    })
-
-    let tasks = uncompletedTasksNew.concat(completedTasksNew)
-
-    router
-        .patch(`/tasks/update`, {
-            tasks: tasks
-        })
-        .then((response) => {
-            console.log(response.data)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-}
+function onAdd(event) {
+  const taskID = event.item.__draggable_context.element.id;
+  router.put(`/task/${taskID}/completed`);
+};
 
 </script>
 
 <template>
-    <div class="row">
-        <div class="col-md-4 col-md-offset-2">
-            <section class="list">
-                <header>UPCOMING</header>
-                <draggable
-                    v-model="uncompletedTasksNew"
-                    class="drag-area"
-                    tag="article"
-                    item-key="id">
-                    <template #item="{ element }">
-                        <h1> {{ element.title }}</h1>
-                    </template>
-                </draggable>
-            </section>
-        </div>
-        <div class="col-md-4">
-            <section class="list">
-                <header>COMPLETED</header>
-                <draggable
-                    v-model="completedTasksNew"
-                    class="drag-area"
-                    tag="article"
-                    item-key="id">
-                    <template #item="{ element }">
-                        <h1> {{ element.title }}</h1>
-                    </template>
-                </draggable>
-            </section>
-        </div>
-    </div>
-</template>
+  <small>Not Completed Tasks</small>
+  <draggable
+    v-model="newNotCompletedTasks"
+    group="tasks"
+    item-key="id"
+    :sort="false"
+    @add="onAdd($event)"
+    >
+    <template #item="{ element }">
+      <Task
+        :id="element.id"
+        :title="element.title"
+        :created="element.created_at"
+        :updated="element.updated_at"
+      ></Task>
+    </template>
+  </draggable>
 
-<style>
-    .drag-area{
-     min-height: 10px;
-    }
-</style>
+  <small>Completed Tasks</small>
+  <draggable
+    v-model="newCompletedTasks"
+    item-key="id"
+    group="tasks"
+    :sort="false"
+    @add="onAdd($event)"
+    >
+    <template #item="{ element }">
+      <Task
+        :id="element.id"
+        :title="element.title"
+        :created="element.created_at"
+        :updated="element.updated_at"
+      ></Task>
+    </template>
+  </draggable>
+
+  <div v-if="newCompletedTasks.length == 0" id="drag-drop" class="bg-gray-200 max-w-2xl p-4 sm:p-6 lg:p-8 text-center">
+    <small>Drag here to complete task</small>
+  </div>
+</template>

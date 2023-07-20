@@ -12,7 +12,8 @@ class Task extends Model
 
     protected $fillable = [
         'title',
-        'content'
+        'content',
+        'completed'
     ];
 
     public function user() : BelongsTo

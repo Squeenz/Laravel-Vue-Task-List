@@ -38,6 +38,10 @@ Route::resource('task', TaskController::class)
 ->only(['index', 'create', 'store', 'show', 'update', 'destroy'])
 ->middleware(['auth', 'verified']);
 
+Route::put('/task/{task}/completed', [TaskController::class, 'updateCompleted'])
+->middleware(['auth', 'verified'])
+->name('task.completed');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
