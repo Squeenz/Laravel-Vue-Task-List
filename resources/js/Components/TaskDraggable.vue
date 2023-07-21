@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, computed } from 'vue';
 import draggable from 'vuedraggable';
 import Task from '@/Components/Task.vue';
 import { router } from '@inertiajs/vue3';
@@ -12,9 +12,20 @@ const props = defineProps({
 const newCompletedTasks = ref(props.completedTasks);
 const newNotCompletedTasks = ref(props.notCompletedTasks);
 
+function sortListByCreatedAtDate(taskList)
+{
+    return taskList.value.slice().sort((a, b) => {
+        // Sorting by the 'created_at' property in ascending order
+        return new Date(a.created_at) - new Date(b.created_at);
+    });
+};
+
 function onAdd(event) {
   const taskID = event.item.__draggable_context.element.id;
   router.put(`/task/${taskID}/completed`);
+
+  newNotCompletedTasks.value = sortListByCreatedAtDate(newNotCompletedTasks);
+  newCompletedTasks.value = sortListByCreatedAtDate(newCompletedTasks);
 };
 
 </script>
@@ -25,7 +36,7 @@ function onAdd(event) {
     v-model="newNotCompletedTasks"
     group="tasks"
     item-key="id"
-    :sort="false"
+    sort="false"
     @add="onAdd($event)"
     >
     <template #item="{ element }">
