@@ -32,6 +32,9 @@ function onAdd(event) {
 
 <template>
   <small>Not Completed Tasks</small>
+  <div v-if="notCompletedTasks.length == 0" id="drag-drop" class="bg-gray-200 max-w-2xl p-4 sm:p-6 lg:p-8 text-center">
+    <small>No tasks</small>
+  </div>
   <draggable
     v-model="newNotCompletedTasks"
     group="tasks"

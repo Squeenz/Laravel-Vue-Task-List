@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Models\Task;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,13 +27,12 @@ use Inertia\Inertia;
 //     ]);
 // });
 
-Route::get('/', function() {
-    redirect(route('login'));
-});
-
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/', [TaskController::class, 'userLeaderboards'])
+->name('task.userLeaderboards');
 
 Route::resource('task', TaskController::class)
 ->only(['index', 'create', 'store', 'show', 'update', 'destroy'])

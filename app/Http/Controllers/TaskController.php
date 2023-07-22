@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -16,9 +17,16 @@ class TaskController extends Controller
      */
     public function index(): Response
     {
-        return Inertia::render('Task/Index', [
+        return Inertia::render('Task/Tasks', [
             'completedTasks' => Task::where('user_id', Auth::id())->where('completed', true)->get(),
             'notCompletedTasks' => Task::where('user_id', Auth::id())->where('completed', false)->get()
+        ]);
+    }
+
+    public function userLeaderboards(): Response
+    {
+        return Inertia::render('Task/UserLeaderboards', [
+            'users' => User::all(),
         ]);
     }
 
