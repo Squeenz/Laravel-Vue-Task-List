@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
-use App\Models\User;
+use App\Models\Leaderboard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -17,16 +17,9 @@ class TaskController extends Controller
      */
     public function index(): Response
     {
-        return Inertia::render('Task/Tasks', [
+        return Inertia::render('Task/Index', [
             'completedTasks' => Task::where('user_id', Auth::id())->where('completed', true)->get(),
             'notCompletedTasks' => Task::where('user_id', Auth::id())->where('completed', false)->get()
-        ]);
-    }
-
-    public function userLeaderboards(): Response
-    {
-        return Inertia::render('Task/UserLeaderboards', [
-            'users' => User::all(),
         ]);
     }
 
@@ -49,6 +42,21 @@ class TaskController extends Controller
         ]);
 
         $request->user()->tasks()->create($validated);
+
+        if (Leaderboard::where('user_id', Auth::id())->exists())
+        {
+            Leaderboard::where('user_id', Auth::id())->increment('not_completed_tasks');
+            Leaderboard::where('user_id', Auth::id())->increment('total_tasks');
+        }
+        else
+        {
+            Leaderboard::create([
+                'user_id' => Auth::id(),
+                'name' => Auth::user()->name,
+            ]);
+            Leaderboard::where('user_id', Auth::id())->increment('not_completed_tasks');
+            Leaderboard::where('user_id', Auth::id())->increment('total_tasks');
+        }
 
         return redirect(route('task.index'));
     }
@@ -96,6 +104,17 @@ class TaskController extends Controller
         $task->update([
             'completed' => !$task->completed,
         ]);
+
+        if (!$task->completed)
+        {
+            Leaderboard::where('user_id', Auth::id())->increment('not_completed_tasks');
+            Leaderboard::where('user_id', Auth::id())->decrement('completed_tasks');
+        }
+        else
+        {
+            Leaderboard::where('user_id', Auth::id())->increment('completed_tasks');
+            Leaderboard::where('user_id', Auth::id())->decrement('not_completed_tasks');
+        }
     }
 
     /**
