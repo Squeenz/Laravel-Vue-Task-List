@@ -126,6 +126,17 @@ class TaskController extends Controller
 
         $task->delete();
 
+        if (!$task->completed)
+        {
+            Leaderboard::where('user_id', Auth::id())->decrement('not_completed_tasks');
+        }
+        else
+        {
+            Leaderboard::where('user_id', Auth::id())->decrement('completed_tasks');
+        }
+
+        Leaderboard::where('user_id', Auth::id())->decrement('total_tasks');
+
         return redirect(route('task.index'));
     }
 }
